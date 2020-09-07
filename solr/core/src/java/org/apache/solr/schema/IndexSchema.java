@@ -55,6 +55,7 @@ import org.apache.solr.common.MapSerializable;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.SolrException.ErrorCode;
+import org.apache.solr.common.cloud.SolrClassLoader;
 import org.apache.solr.common.params.CommonParams;
 import org.apache.solr.common.params.MapSolrParams;
 import org.apache.solr.common.params.ModifiableSolrParams;
@@ -63,7 +64,6 @@ import org.apache.solr.common.util.Cache;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.common.util.Pair;
 import org.apache.solr.common.util.SimpleOrderedMap;
-import org.apache.solr.common.cloud.SolrClassLoader;
 import org.apache.solr.core.SolrCore;
 import org.apache.solr.core.SolrResourceLoader;
 import org.apache.solr.core.XmlConfigFile;
@@ -755,9 +755,13 @@ public class IndexSchema {
 //    NodeList nodes = (NodeList)xpath.evaluate(expression, document, XPathConstants.NODESET);
 
     List<ConfigNode> nodes = n.children(COPY_FIELD);
-    for (int i=0; i<nodes.size(); i++) {
-      ConfigNode node = nodes.get(i);
-//      NamedNodeMap attrs = node.getAttributes();
+    ConfigNode f = n.child(FIELDS);
+    if (f != null) {
+      List<ConfigNode> c = f.children(COPY_FIELD);
+      if (nodes.isEmpty()) nodes = c;
+      else nodes.addAll(c);
+    }
+    for (ConfigNode node : nodes) {
 
       String source = DOMUtil.getAttr(node, SOURCE, COPY_FIELD + " definition");
       String dest   = DOMUtil.getAttr(node, DESTINATION,  COPY_FIELD + " definition");
