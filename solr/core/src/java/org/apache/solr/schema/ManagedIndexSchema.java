@@ -41,10 +41,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.util.CharFilterFactory;
-import org.apache.lucene.analysis.util.ResourceLoaderAware;
-import org.apache.lucene.analysis.util.TokenFilterFactory;
-import org.apache.lucene.analysis.util.TokenizerFactory;
+import org.apache.lucene.analysis.CharFilterFactory;
+import org.apache.lucene.util.ResourceLoaderAware;
+import org.apache.lucene.analysis.TokenFilterFactory;
+import org.apache.lucene.analysis.TokenizerFactory;
 import org.apache.lucene.util.Version;
 import org.apache.solr.analysis.TokenizerChain;
 import org.apache.solr.client.solrj.SolrClient;
@@ -79,6 +79,8 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import static org.apache.solr.core.SolrResourceLoader.informAware;
+
 
 /** Solr-managed schema - non-user-editable, but can be mutable via internal and external REST API requests. */
 public final class ManagedIndexSchema extends IndexSchema {
@@ -1325,7 +1327,7 @@ public final class ManagedIndexSchema extends IndexSchema {
     for (CharFilterFactory next : charFilters) {
       if (next instanceof ResourceLoaderAware) {
         try {
-          ((ResourceLoaderAware) next).inform(loader);
+          informAware(loader, (ResourceLoaderAware) next);
         } catch (IOException e) {
           throw new SolrException(ErrorCode.SERVER_ERROR, e);
         }
@@ -1335,7 +1337,7 @@ public final class ManagedIndexSchema extends IndexSchema {
     TokenizerFactory tokenizerFactory = chain.getTokenizerFactory();
     if (tokenizerFactory instanceof ResourceLoaderAware) {
       try {
-        ((ResourceLoaderAware) tokenizerFactory).inform(loader);
+        informAware(loader, (ResourceLoaderAware) tokenizerFactory);
       } catch (IOException e) {
         throw new SolrException(ErrorCode.SERVER_ERROR, e);
       }
@@ -1345,7 +1347,7 @@ public final class ManagedIndexSchema extends IndexSchema {
     for (TokenFilterFactory next : filters) {
       if (next instanceof ResourceLoaderAware) {
         try {
-          ((ResourceLoaderAware) next).inform(loader);
+          informAware(loader, (ResourceLoaderAware) next);
         } catch (IOException e) {
           throw new SolrException(ErrorCode.SERVER_ERROR, e);
         }
