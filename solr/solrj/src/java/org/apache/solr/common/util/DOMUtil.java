@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.solr.util;
+package org.apache.solr.common.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,11 +24,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableSet;
 import org.apache.solr.common.ConfigNode;
 import org.apache.solr.common.SolrException;
-import org.apache.solr.common.util.NamedList;
-import org.apache.solr.common.util.StrUtils;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -42,7 +39,7 @@ public class DOMUtil {
 
   public static final String XML_RESERVED_PREFIX = "xml";
 
-  public static final Set<String>  NL_TAGS = ImmutableSet.of("str", "int","long","float","double","bool");
+  public static final Set<String>  NL_TAGS = Set.of("str", "int","long","float","double","bool");
 
 
   public static Map<String,String> toMap(NamedNodeMap attrs) {
