@@ -57,6 +57,7 @@ public class DOMUtil {
     return args;
   }
 
+
   public static Map<String,String> toMapExcept(NamedNodeMap attrs, String... exclusions) {
     Map<String,String> args = new HashMap<>();
     outer: for (int j=0; j<attrs.getLength(); j++) {
@@ -140,6 +141,7 @@ public class DOMUtil {
     return readNamedListChildren(node);
   }
 
+
   public static NamedList<Object> nodesToNamedList(NodeList nlst) {
     NamedList<Object> clst = new NamedList<>();
     for (int i=0; i<nlst.getLength(); i++) {
@@ -191,11 +193,13 @@ public class DOMUtil {
     } else {
       final String textValue = getText(nd);
       val = parseVal(type, name, textValue);
+
     }
 
     if (nlst != null) nlst.add(name,val);
     if (arr != null) arr.add(val);
   }
+
 
   private static Object parseVal(String type, String name, String textValue) {
     Object val = null;
@@ -249,6 +253,7 @@ public class DOMUtil {
     });
     return result;
   }
+
 
   /**
    * Drop in replacement for Node.getTextContent().

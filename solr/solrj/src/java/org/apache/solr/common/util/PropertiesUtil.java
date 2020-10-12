@@ -30,15 +30,19 @@ import java.util.function.Function;
  * the DOM (they came from DomUtils) and it's really confusing to see them in something labeled DOM
  */
 public class PropertiesUtil {
+
   public static String substituteProperty(String value, Properties coreProperties) {
     if(coreProperties == null) return substitute(value, null);
     return substitute(value, coreProperties::getProperty);
   }
+
   /*
   * This method borrowed from Ant's PropertyHelper.replaceProperties:
   *   http://svn.apache.org/repos/asf/ant/core/trunk/src/main/org/apache/tools/ant/PropertyHelper.java
   */
+
   public static String substitute(String value, Function<String,String> coreProperties) {
+
     if (value == null || value.indexOf('$') == -1) {
       return value;
     }
